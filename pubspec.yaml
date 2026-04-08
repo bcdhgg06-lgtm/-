@@ -25,5 +25,12 @@ dev_dependencies:
     sdk: flutter
   flutter_lints: any
 
+dependency_overrides:
+  string_scanner: ^1.4.1
+  term_glyph: ^1.2.2
+  shared_preferences: ^2.2.3
+  speech_to_text: ^6.6.0
+  web: ^0.4.2
+
 flutter:
   uses-material-design: true

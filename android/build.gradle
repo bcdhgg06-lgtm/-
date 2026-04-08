@@ -5,7 +5,7 @@ buildscript {
         mavenCentral()
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:8.1.0'
+        classpath 'com.android.tools.build:gradle:8.7.2'
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
     }
 }
@@ -15,22 +15,25 @@ allprojects {
         google()
         mavenCentral()
     }
-    // هذا الجزء هو الحل: إجبار كل المكتبات على استخدام نسخة واحدة من Kotlin
-    configurations.all {
-        resolutionStrategy.eachDependency { DependencyResolveDetails details ->
-            if (details.requested.group == 'org.jetbrains.kotlin') {
-                details.useVersion "1.9.22"
-            }
-        }
-    }
 }
 
 rootProject.buildDir = '../build'
 subprojects {
     project.buildDir = "${rootProject.buildDir}/${project.name}"
-}
-subprojects {
     project.evaluationDependsOn(':app')
+
+    configurations.all {
+        resolutionStrategy.eachDependency { details ->
+            if (details.requested.group == 'org.jetbrains.kotlin') {
+                details.useVersion rootProject.ext.kotlin_version
+                details.because 'Align Kotlin metadata across all modules'
+            }
+        }
+        resolutionStrategy.force "org.jetbrains.kotlin:kotlin-stdlib:$rootProject.ext.kotlin_version"
+        resolutionStrategy.force "org.jetbrains.kotlin:kotlin-stdlib-common:$rootProject.ext.kotlin_version"
+        resolutionStrategy.force "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$rootProject.ext.kotlin_version"
+        resolutionStrategy.force "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$rootProject.ext.kotlin_version"
+    }
 }
 
 tasks.register("clean", Delete) {

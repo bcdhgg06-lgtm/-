@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:ai_system_agent/controllers/agent_controller.dart';
+import 'package:modern_app/controllers/agent_controller.dart';
 
 void main() {
   runApp(
